@@ -1,4 +1,4 @@
-# wais-iv_graph_generator_app.py
+# wais-iv_streamlit_graph_generator_app.py
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
