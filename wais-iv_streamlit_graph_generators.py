@@ -1,4 +1,4 @@
-# wais-iv_streamlit_graph_generator_app.py
+# wais-iv_graph_generator_app.py
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,12 +12,12 @@ def get_graph_as_image(fig):
     return img_bytes
 
 # Set page config
-st.set_page_config(page_title="WAIS-IV Graph Generator", layout="wide")
-st.title("📊 WAIS-IV Graph Generator: Subtest and Composite Score Profiles")
+st.set_page_config(page_title="Graph Generator", layout="wide")
+st.title("📊 Graph Generator: Subtest and Composite Score Profiles")
 
 # Instructions for the user
 st.markdown("""
-Use this app to generate either the **Subtest Scaled Score Profile** graph or the **Composite Score Profile** graph for the WAIS-IV.
+Use this app to generate either the **Subtest Scaled Score Profile** graph or the **Composite Score Profile** graph.
 Adjust the values in the sidebar and click **Generate Graph** to view and download the graph.
 """)
 
@@ -28,8 +28,8 @@ graph_type = st.sidebar.radio(
 )
 
 # --- Subtest Scaled Score Profile Graph ---
-if graph_type == "WAIS-IV Subtest Scaled Score Profile":
-    st.subheader("WAIS-IV Subtest Scaled Score Profile Graph Generator")
+if graph_type == "Subtest Scaled Score Profile":
+    st.subheader("Subtest Scaled Score Profile Graph Generator")
 
     categories = {
         "Verbal Comprehension": ["SI", "VC", "IN", "(CO)"],
@@ -118,13 +118,13 @@ if graph_type == "WAIS-IV Subtest Scaled Score Profile":
         st.download_button(
             label="Download Subtest Profile Graph as PNG",
             data=img_bytes,
-            file_name="wais-iv_subtest_scaled_score_profile.png",
+            file_name="subtest_scaled_score_profile.png",
             mime="image/png"
         )
 
 # --- Composite Score Profile Graph ---
-elif graph_type == "WAIS-IV Composite Score Profile":
-    st.subheader("WAIS-IV Composite Score Profile Graph Generator")
+elif graph_type == "Composite Score Profile":
+    st.subheader("Composite Score Profile Graph Generator")
 
     # Data for Composite Score Profile
     indices = ['VCI', 'PRI', 'WMI', 'PSI']
@@ -195,7 +195,7 @@ elif graph_type == "WAIS-IV Composite Score Profile":
         st.download_button(
             label="Download Composite Score Profile Graph as PNG",
             data=img_bytes,
-            file_name="wais-iv_composite_score_profile.png",
+            file_name="composite_score_profile.png",
             mime="image/png"
         )
 
