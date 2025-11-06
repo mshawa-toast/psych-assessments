@@ -13,7 +13,7 @@ def get_graph_as_image(fig):
 
 # Set page config
 st.set_page_config(page_title="Graph Generator", layout="wide")
-st.title("📊 Graph Generator: Subtest and Composite Score Profiles")
+st.title("📊 WAIS-IV Graph Generator: Subtest and Composite Score Profiles")
 
 # Instructions for the user
 st.markdown("""
