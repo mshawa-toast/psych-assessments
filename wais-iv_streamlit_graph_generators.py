@@ -118,7 +118,7 @@ if graph_type == "Subtest Scaled Score Profile":
         st.download_button(
             label="Download Subtest Profile Graph as PNG",
             data=img_bytes,
-            file_name="subtest_scaled_score_profile.png",
+            file_name="wais-iv_subtest_scaled_score_profile.png",
             mime="image/png"
         )
 
@@ -195,7 +195,7 @@ elif graph_type == "Composite Score Profile":
         st.download_button(
             label="Download Composite Score Profile Graph as PNG",
             data=img_bytes,
-            file_name="composite_score_profile.png",
+            file_name="wais-iv_composite_score_profile.png",
             mime="image/png"
         )
 
