@@ -134,7 +134,7 @@ elif graph_type == "Composite Score Profile":
         index_sems.append(sem)
 
     fsiq_score = [st.sidebar.number_input("FSIQ Score", min_value=35, max_value=165, value=100)]
-    fsiq_sem = [st.sidebar.number_input("FSIQ SEM", min_value=0.0, max_value=10.0, value=0.99)]
+    fsiq_sem = [st.sidebar.number_input("FSIQ SEM", min_value=0.0, max_value=10.0, value=1.99)]
 
     if st.button("Generate Graph"):
         fig, ax = plt.subplots(figsize=(6, 6))
@@ -147,7 +147,7 @@ elif graph_type == "Composite Score Profile":
         ax.errorbar(fsiq_label, fsiq_score, yerr=fsiq_sem, fmt='o', color='blue', capsize=5)
 
         # Vertical line divider between PSI and FSIQ
-        ax.axvline(x=3.5, color='lightgray', linestyle='-', linewidth=1)
+        ax.axvline(x=4.5, color='lightgray', linestyle='-', linewidth=1)
 
         # Horizontal mean line
         ax.axhline(y=100, color='darkblue', linewidth=1.5)
