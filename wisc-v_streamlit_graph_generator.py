@@ -38,8 +38,23 @@ if graph_type == "Subtest Scaled Score Profile":
         "Processing Speed": ["CD", "SS", "CA"]
     }
 
-    default_scores = {s: 10 for cat in categories.values() for s in cat}
-    default_sems = {s: 0.99 for cat in categories.values() for s in cat}
+    # Custom default scaled scores
+    default_scores = {
+        "SI": 10, "VC": 10, "IN": 10, "CO": 10,
+        "BD": 10, "VP": 10,
+        "MR": 10, "FW": None, "PC": None, "AR": None,
+        "DS": 10, "PS": None, "LN": None,
+        "CD": 10, "SS": 10, "CA": None
+    }
+
+    # Custom default SEMs
+    default_sems = {
+        "SI": 0.99, "VC": 0.99, "IN": 0.99, "CO": 0.99,
+        "BD": 0.99, "VP": 0.99,
+        "MR": 0.99, "FW": None, "PC": None, "AR": None,
+        "DS": 0.99, "PS": None, "LN": None,
+        "CD": 0.99, "SS": 0.99, "CA": None
+    }
 
     st.sidebar.header("Adjust Scaled Scores and SEMs")
     scores = {}
@@ -48,12 +63,21 @@ if graph_type == "Subtest Scaled Score Profile":
     for category, subtests in categories.items():
         st.sidebar.subheader(category)
         for subtest in subtests:
-            scores[subtest] = st.sidebar.number_input(
-                f"{subtest} Scaled Score", min_value=1, max_value=19, value=default_scores[subtest]
-            )
-            sems[subtest] = st.sidebar.number_input(
-                f"{subtest} SEM", min_value=0.0, max_value=3.0, value=default_sems[subtest]
-            )
+            if default_scores[subtest] is not None:
+                scores[subtest] = st.sidebar.number_input(
+                    f"{subtest} Scaled Score", min_value=1, max_value=19, value=default_scores[subtest]
+                )
+            else:
+                scores[subtest] = None
+                st.sidebar.markdown(f"{subtest} Scaled Score: *Not administered*")
+
+            if default_sems[subtest] is not None:
+                sems[subtest] = st.sidebar.number_input(
+                    f"{subtest} SEM", min_value=0.0, max_value=3.0, value=default_sems[subtest]
+                )
+            else:
+                sems[subtest] = None
+                st.sidebar.markdown(f"{subtest} SEM: *N/A*")
 
     if st.button("Generate Graph"):
         subtests = sum(categories.values(), [])
@@ -63,16 +87,19 @@ if graph_type == "Subtest Scaled Score Profile":
         # Plot each category separately to break lines
         start = 0
         for subs in categories.values():
-            end = start + len(subs)
-            x_cat = x[start:end]
-            y_cat = [scores[s] for s in subs]
-            yerr_cat = [sems[s] for s in subs]
-            ax.errorbar(
-                x_cat, y_cat, yerr=yerr_cat,
-                fmt='o-', color='blue', ecolor='blue',
-                elinewidth=2, capsize=5
-            )
-            start = end
+            valid_subs = [s for s in subs if scores[s] is not None]
+            x_cat = [x[subtests.index(s)] for s in valid_subs]
+            y_cat = [scores[s] for s in valid_subs]
+            yerr_cat = [sems[s] for s in valid_subs]
+
+            if valid_subs:
+                ax.errorbar(
+                    x_cat, y_cat, yerr=yerr_cat,
+                    fmt='o-', color='blue', ecolor='blue',
+                    elinewidth=2, capsize=5
+                )
+
+            start += len(subs)
 
         # Highlight average band
         ax.axhspan(9.5, 10.5, color='lightblue', alpha=0.3)
@@ -118,8 +145,8 @@ elif graph_type == "Composite Score Profile":
     st.subheader("Composite Score Profile")
 
     indices = ['VCI', 'VSI', 'FRI', 'WMI', 'PSI']
-    default_scores = [100]*5
-    default_sems = [1.99]*5
+    default_scores = [100] * 5
+    default_sems = [1.99] * 5
     fsiq_label = ['FSIQ']
     default_fsiq_score = [100]
     default_fsiq_sem = [1.99]
